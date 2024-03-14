@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Voices Unveiled</title>
+    <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet">
+    <style>
+         body {
+            background-color: black;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: "Abel", sans-serif; /* Abel font applied to all text */
+        }
+        .content-container {
+            text-align: center;
+            padding: 20px;
+            max-width: 600px;
+            color: white;
+            margin-bottom: 20px; /* Ensure space between the content and the button */
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            width: 100%; /* Ensure the container spans the full width */
+        }
+        #videoFeed {
+            display: none;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 300px;
+        }
+        #gif {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .button-86 {
+          all: unset;
+          width: 100px;
+          height: 30px;
+          font-size: 16px;
+          background: transparent;
+          border: none;
+          position: relative;
+          color: #f0f0f0;
+          cursor: pointer;
+          z-index: 10;
+          padding: 10px 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          white-space: nowrap;
+          user-select: none;
+          -webkit-user-select: none;
+          touch-action: manipulation;
+        }
+
+        .button-86::after,
+        .button-86::before {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          z-index: -99999;
+          transition: all .4s;
+        }
+
+        .button-86::before {
+          transform: translate(0%, 0%);
+          width: 100%;
+          height: 100%;
+          background: #28282d;
+          border-radius: 10px;
+        }
+
+        .button-86::after {
+          transform: translate(10px, 10px);
+          width: 35px;
+          height: 35px;
+          background: #ffffff15;
+          backdrop-filter: blur(5px);
+          -webkit-backdrop-filter: blur(5px);
+          border-radius: 50px;
+        }
+
+        .button-86:hover::before {
+          transform: translate(5%, 20%);
+          width: 110%;
+          height: 110%;
+        }
+
+        .button-86:hover::after {
+          border-radius: 10px;
+          transform: translate(0, 0);
+          width: 100%;
+          height: 100%;
+        }
+
+        .button-86:active::after {
+          transition: 0s;
+          transform: translate(0, 5%);
+        }
+
+        #subtitle {
+            display: none; /* Add this line to initially hide the subtitles */
+            color: white;
+            font-size: 50px;
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .image-pair {
+            display: flex;
+            justify-content: center;
+            margin: 20px;
+        }
+
+         .language {
+            width: 150px;
+            height: auto;
+            display: block;
+            position: relative;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="content-container" id="projectBrief">
+        <h2>Welcome<br>to the<br>Voices Unveiled</h2>
+        <p>Voices Unveiled leverages the transformative power of AI and art to challenge and critique hate speech within the Turkish Parliament. By analyzing parliamentary discourse through advanced AI techniques, this project reimagines these conversations, fostering a culture of respect and understanding.</p>
+    <!-- Adjusted img tag with margin for spacing and block display -->
+        <img id="sensitive_content" src="{{ url_for('static', filename='/sc.png') }}" alt="Sensitive Content" style="display: block; margin: 20px auto; width: 60px; height: auto; position: relative;">
+        <h3>Sensitive Content!</h3>
+        <p>This project contains content that some people may find offensive and disturbing.</p>
+    </div>
+
+    <div class="button-container">
+        <button class="button-86" role="button" id="startButton" onclick="startExperience()">Start the Experience</button>
+    </div>
+    <div class="content-container" id="instructions">
+        <p>To trigger the conversion, simply perform these specific gestures means "better" towards the camera or say "switch."</p>
+    </div>
+    <div class="image-container" id="instructions_png">
+        <div class="image-pair">
+            <img class="language" src="{{ url_for('static', filename='/1.png') }}" alt="better">
+            <img class="language" src="{{ url_for('static', filename='/1.1.png') }}" alt="better">
+        </div>
+        <div class="image-pair">
+            <img class="language" src="{{ url_for('static', filename='/2.png') }}" alt="better">
+            <img class="language" src="{{ url_for('static', filename='/2.1.png') }}" alt="better">
+        </div>
+    </div>
+
+
+    <img id="gif" src="{{ url_for('static', filename='/politicianAI.gif') }}" alt="Experience GIF">
+    <img id="videoFeed" src="/video_feed">
+    <p id="subtitle" style="color: white; font-size: 50px; position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);">Subtitles appear here...</p>
+
+   <script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+    function startExperience() {
+    var projectBrief = document.getElementById('projectBrief');
+    if (projectBrief) projectBrief.style.display = 'none';
+
+    var instructions = document.getElementById('instructions_png');
+    if (instructions) instructions.style.display = 'none';
+
+    var instructions2 = document.getElementById('instructions');
+    if (instructions2) instructions2.style.display = 'none';
+
+    var gif = document.getElementById('gif');
+    if (gif) gif.style.display = "block";
+
+    var videoFeed = document.getElementById('videoFeed');
+    if (videoFeed) {
+        videoFeed.src = "/video_feed";
+        videoFeed.style.display = "block";
+    }
+
+    var startButton = document.getElementById('startButton');
+    if (startButton) startButton.style.display = "none";
+
+    fetch("/start_generating")
+        .then(response => response.json())
+        .then(data => console.log("Started generating in background"))
+        .catch(error => console.error('Error starting generation:', error));
+
+    fetch("/start_listening")
+        .then(response => response.json())
+        .then(data => console.log(data.message))
+        .catch(error => console.error('Error starting speech recognition:', error));
+
+    // Make the subtitle visible when the experience starts
+    var subtitle = document.getElementById('subtitle');
+    if (subtitle) subtitle.style.display = "block";
+
+    startUpdatingSubtitles();
+}
+
+    function startUpdatingSubtitles() {
+        setInterval(updateSubtitle, 2000);
+    }
+
+    function updateSubtitle() {
+        var subtitle = document.getElementById('subtitle');
+        if (subtitle) {
+            fetch('/get_current_sentence')
+            .then(response => response.json())
+            .then(data => {
+                subtitle.innerText = data.current_sentence;
+            })
+            .catch(error => console.error('Error fetching current sentence:', error));
+        }
+    }
+
+    var startButton = document.getElementById('startButton');
+    if (startButton) {
+        startButton.addEventListener('click', startExperience);
+    }
+  });
+</script>
+
+</body>
+</html>
